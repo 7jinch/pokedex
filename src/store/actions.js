@@ -24,6 +24,12 @@ export const actions = {
       case 'detail':
         router.push(`/${id}`);
         break;
+      case 'prev':
+        router.push(`${id - 1}`);
+        break;
+      case 'next':
+        router.push(`${id + 1}`);
+        break;
     }
   },
 
@@ -37,7 +43,7 @@ export const actions = {
     let pokeList = [];
     await fetchPokeList(this.searchOption.offset, this.searchOption.limit)
       .then(({ data }) => {
-        console.log(data.results);
+        // console.log(data.results);
         pokeList = data.results.map((poke) => {
           return {
             id: poke.url.split('/')[6], // 포켓몬 id

@@ -6,7 +6,7 @@ export const state = () => ({
   // 검색 옵션
   searchOption: {
     offset: 0, // 검색 시 시작값
-    limit: 20, // 검색 시 개수
+    limit: 10, // 검색 시 개수
   },
 
   // 검색한 포켓몬 정보

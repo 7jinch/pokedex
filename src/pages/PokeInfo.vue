@@ -1,6 +1,4 @@
 <template>
-  <div @click="test">테스트 버튼</div>
-
   <div id="poke-info-page" class="poke-info-page">
     <div id="prev-next-poke" class="prev-next-poke">
       <div
@@ -67,25 +65,25 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../store/store';
 import { storeToRefs } from 'pinia';
 
 const route = useRoute(); // route 객체 생성(router 아님)
+const router = useRouter();
 const store = useStore(); // store 객체 생성
 const { pokeInfo } = storeToRefs(store);
 
-const test = () => {
-  console.log(pokeInfo.value.genera);
-};
-
 const prevPokeInfo = (keyword) => {
+  console.log(keyword);
   switch (keyword) {
     case 'prev':
+      store.movePage(router, keyword, Number(pokeInfo.value.id));
       store.getPokeInfo(Number(pokeInfo.value.id) - 1);
       break;
     case 'next':
+      store.movePage(router, keyword, Number(pokeInfo.value.id));
       store.getPokeInfo(Number(pokeInfo.value.id) + 1);
       break;
   }
@@ -94,6 +92,11 @@ const prevPokeInfo = (keyword) => {
 onMounted(() => {
   store.getPokeInfo(route.params.id);
 });
+
+// watch(
+//   () => pokeInfo.value.id,
+//   () => store.getPokeInfo(route.params.id)
+// );
 </script>
 
 <style>
