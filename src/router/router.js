@@ -3,6 +3,7 @@ import { useStore } from '../store/store.js';
 import PokeList from '../pages/PokeList.vue';
 import PokeLike from '../pages/PokeLike.vue';
 import PokeMyList from '../pages/PokeMyList.vue';
+import PokeInfo from '../pages/PokeInfo.vue';
 import NotFound from '../pages/NotFound.vue';
 
 export const router = createRouter({
@@ -12,6 +13,7 @@ export const router = createRouter({
     { path: '/list', component: PokeList },
     { path: '/like', component: PokeLike },
     { path: '/my-poke', component: PokeMyList },
+    { path: '/:id', component: PokeInfo },
     { path: '/:pathMatch(.*)*', component: NotFound },
   ],
 });

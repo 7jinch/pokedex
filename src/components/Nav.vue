@@ -20,23 +20,12 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useStore } from '../store/store.js';
 
-const router = useRouter();
+const router = useRouter(); // router 객체 생성
+const store = useStore(); // store 객체 생성
 
-// 페이지 이동
-const movePage = (url) => {
-  switch (url) {
-    case 'list':
-      router.push('/list');
-      break;
-    case 'like':
-      router.push('/like');
-      break;
-    case 'my-poke':
-      router.push('/my-poke');
-      break;
-  }
-};
+const movePage = (url) => store.movePage(router, url);
 </script>
 
 <style scoped>

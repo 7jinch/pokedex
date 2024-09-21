@@ -20,16 +20,16 @@ const { pokeList } = storeToRefs(store); // 상태값을 반응형 참조로 변
 <style scoped>
 .poke-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-gap: 90px;
+
+  justify-items: center;
+  align-items: center;
 
   width: 70vw;
 }
 
 .poke-info {
-  margin: 0;
-  padding: 0;
-
-  background-color: white;
+  position: relative;
 }
 </style>
