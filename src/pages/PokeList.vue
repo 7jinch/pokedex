@@ -35,7 +35,7 @@ const handleIntersect = (entries) => {
 };
 
 onMounted(() => {
-  loadPokeData();
+  // loadPokeData();
   const observer = new IntersectionObserver(handleIntersect);
   observer.observe(loader.value);
 });

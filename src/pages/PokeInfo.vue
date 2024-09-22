@@ -18,15 +18,19 @@
         <img :src="pokeInfo.officialArtworkImageUrl" />
       </div>
       <div id="poke-info-box" class="poke-info-box">
-        <div id="poke-id" class="poke-id">No. {{ pokeInfo.id }}</div>
-        <div id="poke-name" class="poke-name">{{ pokeInfo.name }}</div>
+        <div id="poke-id-name" class="poke-id-name">
+          <div id="poke-id" class="poke-id">No. {{ pokeInfo.id }}</div>
+          <div id="poke-name" class="poke-name">{{ pokeInfo.name }}</div>
+        </div>
         <div id="poke-flavor-text" class="poke-flavor-text">
           {{ pokeInfo.flavorText }}
         </div>
         <div id="poke-info-mini-box" class="poke-info-mini-box">
           <div id="upper-box" class="upper-box mini-box">
-            <div id="poke-type-box" class="poke-type-box">
-              <div id="poke-type-title" class="poke-type-title">타입</div>
+            <div id="poke-type-box" class="poke-type-box mini-box-in">
+              <div id="poke-type-title" class="poke-type-title mini-box-title">
+                타입
+              </div>
               <div id="poke-type" class="poke-type">
                 <div
                   class="poke-type-in"
@@ -38,26 +42,42 @@
                 </div>
               </div>
             </div>
-            <div id="poke-weight-box" class="poke-weight-box">
-              <div id="poke-weight-title" class="poke-weight-title">몸무게</div>
-              <div id="poke-weight-title" class="poke-weight-title">
-                {{ pokeInfo.weight }}kg
+            <div id="poke-genera-box" class="poke-genera-box mini-box-in">
+              <div
+                id="poke-genera-title"
+                class="poke-genera-title mini-box-title"
+              >
+                분류
               </div>
-            </div>
-            <div id="poke-height-box" class="poke-height-box">
-              <div id="poke-height-title" class="poke-height-title">키</div>
-              <div id="poke-height" class="poke-height">
-                {{ pokeInfo.height }}m
-              </div>
-            </div>
-            <div id="poke-genera-box" class="poke-genera-box">
-              <div id="poke-genera-title" class="poke-genera-title">분류</div>
               <div id="poke-genera" class="poke-genera">
                 {{ pokeInfo.genera }}
               </div>
             </div>
           </div>
-          <div id="bottom-box" class="bottom-box mini-box"></div>
+          <div id="bottom-box" class="bottom-box mini-box">
+            <div id="poke-weight-box" class="poke-weight-box mini-box-in">
+              <div
+                id="poke-weight-title"
+                class="poke-weight-title mini-box-title"
+              >
+                몸무게
+              </div>
+              <div id="poke-weight-title" class="poke-weight-title">
+                {{ pokeInfo.weight }}kg
+              </div>
+            </div>
+            <div id="poke-height-box" class="poke-height-box mini-box-in">
+              <div
+                id="poke-height-title"
+                class="poke-height-title mini-box-title"
+              >
+                키
+              </div>
+              <div id="poke-height" class="poke-height">
+                {{ pokeInfo.height }}m
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -65,7 +85,7 @@
 </template>
 
 <script setup>
-import { onMounted, watch } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from '../store/store';
 import { storeToRefs } from 'pinia';
@@ -76,7 +96,7 @@ const store = useStore(); // store 객체 생성
 const { pokeInfo } = storeToRefs(store);
 
 const prevPokeInfo = (keyword) => {
-  console.log(keyword);
+  // console.log(keyword);
   switch (keyword) {
     case 'prev':
       store.movePage(router, keyword, Number(pokeInfo.value.id));
@@ -99,7 +119,7 @@ onMounted(() => {
 // );
 </script>
 
-<style>
+<style scoped>
 .poke-info-page {
   display: flex;
   flex-direction: column;
@@ -126,18 +146,57 @@ onMounted(() => {
 
 .poke-info-box {
   flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.poke-id {
+  color: gray;
+  font-weight: bold;
+}
+
+.poke-name {
+  font-size: xxx-large;
+  font-weight: bold;
+}
+
+.poke-flavor-text {
+  font-size: large;
+  font-weight: lighter;
+}
+
+.poke-info-mini-box {
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid lightgray;
+  border-radius: 20px;
 }
 
 .mini-box {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+
+  padding: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.mini-box-in {
+  flex: 1;
 }
 
 .poke-type {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: start;
+}
+
+.mini-box-title {
+  color: gray;
+  font-weight: bold;
 }
 
 .poke-type-in {

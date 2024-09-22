@@ -7,7 +7,17 @@
       @mouseleave="handleMouseLeave"
       @click="movePage"
     >
-      <div class="poke-name">{{ poke.name }}</div>
+      <div class="poke-name-type-image">
+        <div class="poke-name">{{ poke.name }}</div>
+        <img
+          class="poke-type-image"
+          :src="
+            poke.types
+              ? returnTypeImage(poke.types)
+              : '/types/question-mark.png'
+          "
+        />
+      </div>
       <img class="poke-image" :src="poke.officialArtworkImageUrl" />
       <div class="light" ref="light"></div>
       <div class="shine" ref="shine"></div>
@@ -19,11 +29,14 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../store/store.js';
+import { returnTypeImage } from '../utils/returnTypeImage.js';
 
 // props 받기
 const props = defineProps({
   poke: Object,
 });
+
+// console.log(props.poke);
 
 const router = useRouter(); // router 객체 생성
 const store = useStore(); // store 객체 생성
@@ -124,7 +137,8 @@ onBeforeUnmount(() => {
 }
 
 .frame:hover .shine {
-  display: none;
+  /* display: none;*/
+  height: 100%;
 }
 
 .poke-card-component {
@@ -144,6 +158,26 @@ onBeforeUnmount(() => {
   border-radius: 10px;
 
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.poke-name-type-image {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.poke-name {
+  font-family: 'jua', sans-serif;
+  font-weight: bold;
+  font-size: larger;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.poke-type-image {
+  width: 15%;
+
+  border-radius: 50%;
 }
 
 .poke-image {
@@ -170,8 +204,8 @@ onBeforeUnmount(() => {
   background: linear-gradient(
     105deg,
     transparent 40%,
-    rgba(192, 192, 192, 0.1) 45%,
-    rgba(192, 192, 192, 0.2) 50%,
+    rgba(192, 192, 192, 0.2) 45%,
+    rgba(192, 192, 192, 0.3) 50%,
     transparent 55%
   );
   filter: brightness(1.1) opacity(0.8);

@@ -26,11 +26,17 @@ export const state = () => ({
     moves: null, // 포켓몬의 스킬
   },
 
-  // // official-artwork 이미지 url과 포켓몬의 id를 저장하는 상태값
-  // // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
+  // 데이터 로딩 여부
+  loadData: false,
+
+  // 데이터 불러오기 실패
+  fetchError: false,
+
+  // official-artwork 이미지 url과 포켓몬의 id를 저장하는 상태값
+  // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
   // pokeOfficialArtworkImageList: [],
 
-  // // showdown 이미지 url과 포켓몬의 id를 저장하는 상태값
-  // // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/1.gif
+  // showdown 이미지 url과 포켓몬의 id를 저장하는 상태값
+  // https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/1.gif
   // pokeShowdownImageList: [],
 });

@@ -21,7 +21,7 @@ export const translateTypeToKorean = (type) => {
     case 'flying':
       return '비행';
     case 'psychic':
-      return '심령';
+      return '에스퍼';
     case 'bug':
       return '벌레';
     case 'rock':

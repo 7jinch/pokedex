@@ -4,6 +4,7 @@ import {
   fetchPokeInfo2,
   fetchOfficialArtworkImage,
   fetchShowdownImage,
+  fetchEvolution,
 } from '../api/api.js';
 import { translateTypeToKorean } from '../utils/translateTypeToKorean.js';
 
@@ -40,7 +41,10 @@ export const actions = {
 
   // 포켓몬 리스트 요청하기
   async getPokeList() {
+    this.loadData = true; // 데이터 로딩 여부
+    this.fetchError = false; // 에러 여부
     let pokeList = [];
+
     await fetchPokeList(this.searchOption.offset, this.searchOption.limit)
       .then(({ data }) => {
         // console.log(data.results);
@@ -59,14 +63,52 @@ export const actions = {
             // detailInfoUrl: poke.url, // 상세 정보 url
           };
         });
+
         this.storePokeList(pokeList);
         this.searchOption.offset += this.searchOption.limit;
+        // this.loadData = false; // 데이터 로딩 완료
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        this.fetchError = true; // 에러
+        console.log(error);
+      });
+
+    for (const poke of this.pokeList) {
+      await fetchPokeInfo1(poke.id)
+        .then(({ data }) => {
+          // 타입
+          const types = data.types.map((type) =>
+            translateTypeToKorean(type.type.name)
+          );
+          poke.types = types;
+          // this.loadData = false; // 데이터 로딩 완료
+        })
+        .catch((error) => {
+          this.fetchError = true; // 에러
+          console.log(error);
+        });
+
+      await fetchPokeInfo2(poke.id)
+        .then(({ data }) => {
+          // 포켓몬 이름(한글)
+          const name = data.names.find(
+            (name) => name.language.name === 'ko'
+          ).name;
+          poke.name = name;
+          this.loadData = false; // 데이터 로딩 완료
+        })
+        .catch((error) => {
+          this.fetchError = true; // 에러
+          console.log(error);
+        });
+    }
   },
 
   // 포켓몬 상세 정보 요청하기
   async getPokeInfo(id) {
+    this.loadData = true; // 데이터 로딩 여부
+    this.fetchError = false; // 에러 여부
+
     await fetchPokeInfo1(id)
       .then(({ data }) => {
         // console.log(data);
@@ -75,29 +117,53 @@ export const actions = {
         this.pokeInfo.height = `${data.height / 10}`; // m 단위로 변경
         this.pokeInfo.showdonwImageUrl = fetchShowdownImage(id);
         this.pokeInfo.officialArtworkImageUrl = fetchOfficialArtworkImage(id);
+        // 타입
         this.pokeInfo.types = data.types.map((type) =>
           translateTypeToKorean(type.type.name)
         );
         this.pokeInfo.moves = data.moves;
+        // this.loadData = false; // 데이터 로딩 완료
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        this.fetchError = true; // 에러
+        console.log(error);
+      });
 
-    await fetchPokeInfo2(id).then(({ data }) => {
-      // console.log(data.genera);
-      // 포켓몬 이름(한글)
-      const name = data.names.find((name) => name.language.name === 'ko').name;
-      this.pokeInfo.name = name;
+    await fetchPokeInfo2(id)
+      .then(({ data }) => {
+        // console.log(data.genera);
+        // 포켓몬 이름(한글)
+        const name = data.names.find(
+          (name) => name.language.name === 'ko'
+        ).name;
+        this.pokeInfo.name = name;
 
-      // 포켓몬 배경 설명(한글)
-      const flavorText = data.flavor_text_entries.find(
-        (flavorText) => flavorText.language.name === 'ko'
-      ).flavor_text;
-      this.pokeInfo.flavorText = flavorText;
+        // 포켓몬 배경 설명(한글)
+        const flavorText = data.flavor_text_entries.find(
+          (flavorText) => flavorText.language.name === 'ko'
+        ).flavor_text;
+        this.pokeInfo.flavorText = flavorText;
 
-      // 포켓몬 분류
-      const genera = data.genera.find((g) => g.language.name === 'ko').genus;
-      this.pokeInfo.genera = genera;
-    });
+        // 포켓몬 분류
+        const genera = data.genera.find((g) => g.language.name === 'ko').genus;
+        this.pokeInfo.genera = genera;
+        this.loadData = false; // 데이터 로딩 완료
+      })
+      .catch((error) => {
+        this.fetchError = true; // 에러
+        console.log(error);
+      });
+
+    // 진화 정보
+    await fetchEvolution(id)
+      .then(({ data }) => {
+        //console.log(data);
+        this.loadData = false; // 데이터 로딩 완료
+      })
+      .catch((error) => {
+        this.fetchError = true; // 에러
+        console.log(error);
+      });
   },
 
   // 포켓몬 리스트 정보를 상태값에 저장하기

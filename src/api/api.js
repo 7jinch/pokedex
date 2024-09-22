@@ -7,6 +7,7 @@ const config = {
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork',
   showdownImageUrl:
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown',
+  evolution: `https://pokeapi.co/api/v2/evolution-chain`,
 };
 
 // 포켓몬 리스트 요청하기
@@ -28,3 +29,5 @@ export const fetchShowdownImage = (id) =>
 export const fetchPokeInfo1 = (id) => axios.get(`${config.pokeInfoUrl}/${id}`);
 export const fetchPokeInfo2 = (id) =>
   axios.get(`${config.pokeInfoNameFlavorTextUrl}/${id}`);
+
+export const fetchEvolution = (id) => axios.get(`${config.evolution}/${id}`);
